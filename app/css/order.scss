@@ -1,0 +1,64 @@
+.order {
+	background: #eee;
+	padding-bottom: 50px;
+}
+
+.order-address {
+	position: relative;
+	margin-bottom: 10px;
+	padding: 15px;
+	display: block;
+    background: #fd405b;
+    color: #fff;
+	.info {
+		span {
+			font-size: 14px;
+			font-weight: 100;
+			margin-right: 5px;
+		}
+		.address span{
+		    font-size: 12px;
+		    margin-top: 5px;
+		    margin-right: 5px
+		}
+	}
+}
+.order-label {
+    color: #999;
+    font-size: 14px;
+    padding-left: 15px;
+    padding-top: 6px;
+}
+.order-setting {
+    position: relative;
+    margin: 10px 0;
+    background: #fff;
+    border-top: 1px solid #dbdcde;
+    ul {
+    	display: block;
+    	padding: 0px 15px;
+	    li {
+	    	list-style: none;
+	    	padding: 10px 0;
+			border-bottom: 1px solid #eee;
+			input {
+				border: 0;
+				border-bottom: 1px solid #eee;
+				height: 30px;
+				width: 120px;
+				text-align: right;
+				font-size: 14px;
+			}
+	    	select {
+			    color: #999;
+			    font-size: 14px;
+			    background: #fff
+	    	}
+		    .special {
+		    	font-size: 12px;
+
+		    }
+	    }
+    }
+
+}

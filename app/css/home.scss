@@ -1,0 +1,161 @@
+@import 'nav.scss';
+
+
+.wrap {
+	position: relative;
+	margin: 0;
+	.genre {
+		position: fixed;
+		width: 25%;
+		height: 100%;
+		left: 0;
+		top: 0;
+		padding-top: 36px;
+		padding-bottom: 30px;
+		background: #f9fdff;
+		border-bottom: 1px solid #ebedf0;
+		box-shadow: 2px 0 3px 1px #eee;
+		-webkit-box-shadow: 2px 0 3px 1px #eee;
+		.genre-list {
+			text-align: center;
+			list-style: none;
+			li {
+				padding: 10px 0;
+				font-size: 0.9em;
+			    &.active {
+				    border-left: 3px solid #fd687d;
+				    border-top: 1px solid #ebedf0;
+				    background-color: #fff
+			    }
+			}
+		}
+	}
+	.goods {
+		position: absolute;
+		width: 72%;
+		top: 0;
+		left: 28%;
+		padding-bottom: 30px;
+		.goods-list {
+			list-style: none;
+			padding-top: 10px;
+			background: #f9fdff;
+			li {
+				position: relative;
+				height: 50px;
+				margin-bottom: 10px;
+				background: #fff;
+				.list-img {
+					float: left;
+					height: 50px;
+					width: 50px;
+					background: #eee;
+					margin-right: 8px;
+				}
+				.list-content {
+					position: relative;
+					.title {
+						font-size: 0.9em;
+					}
+					.description {
+						font-size: 0.8em;
+					}
+					.price {
+						font-size: 0.8em;
+					}
+					.add {
+						position: absolute;
+						right: 5px;
+						top: 10px;
+
+						button {
+							width: 30px;
+							height: 30px;
+							border-radius: 50%;
+							border: 1px solid tomato;
+							background: #fff;
+							outline: none;
+							margin: 6px 2px;
+							i {
+								font-size: 1.5em;
+								color: tomato;
+							}
+						}
+					}
+				}
+
+			}
+		}
+	}
+}
+
+footer {
+	position: fixed;
+	bottom: -1px;
+	left: 0;
+	background: #333;
+	width: 100%;
+	.container {
+		height: 32px;
+		position: relative;
+		margin: 0;
+		list-style: none;
+		.cart {
+			position: relative;
+			float: left;
+			.cart-count {
+				position: absolute;
+				top: -10px;
+				left: 45px;
+				width: 20px;
+				height: 20px;
+				font-size: 0.8em;
+				background: #fe2947;
+				border-radius: 20px;
+				text-align: center;
+				font-style: normal;
+				line-height: 20px;
+				color: #eee;
+			}
+			i {
+				position: absolute;
+				top: -6px;
+				left: 15px;
+				color: #fff;
+				background: #212121;
+				border-radius: 50%;
+				font-size: 30px;
+				width: 40px;
+				height: 40px;
+				text-align: center;
+				line-height: 36px;
+			}
+		}
+		.total {
+			position: absolute;
+			left: 90px;
+			color: #fff;
+			height: 32px;
+			line-height: 32px;
+			.price {
+				b {
+					color: #fff;
+				}
+			}
+		}
+		.buy {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			height: 100%;
+			width: 116px;
+			background: #b0120a;
+			color: #fff;
+			border: 0;
+			&:disabled {
+				background: #757575;
+				color: #fafafa;
+			}
+		}
+	}
+}

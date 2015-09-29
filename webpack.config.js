@@ -3,7 +3,10 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 
 module.exports = {
-	entry: ['webpack/hot/dev-server', path.resolve(__dirname, 'app/main.js')],
+	entry: {
+		app: ['webpack/hot/dev-server', path.resolve(__dirname, 'app/js/main.js')],
+		vendors: ['react', 'react-router'],
+	},
 	output: {
 		path: path.resolve(__dirname, 'build'),
 		filename: 'bundle.[hash].js'
@@ -18,11 +21,22 @@ module.exports = {
 			loader: 'style!css',
 		},{
 			test: /\.scss$/,
-			loader: 'sass-loader',
+			loader: 'style!css!sass'
+		},{
+			test: /\.(woff|ttf)/,
+			loader: 'url?limit=100000',
 		}]
 	},
+	resolve: {
+	    extensions: ['', '.webpack.js', '.web.js', '.coffee', '.js', '.json', '.jsx', '.html', '.scss', '.css']
+	},
+	  node: {
+	    net: 'empty',
+	    tls: 'empty',
+	    dns: 'empty'
+	  },
 	plugins: [
-		new CommonsChunkPlugin('vendor', 'vendors.[hash].js'),
+		new CommonsChunkPlugin('vendors', 'vendors.[hash].js'),
 	    new HtmlWebpackPlugin({
 	      title: 'hello webpack',
 	      template: './app/www/index.html',

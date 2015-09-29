@@ -1,0 +1,36 @@
+.nav {
+	position: relative;
+	top: 0;
+	left: 0;
+	padding: 0.6em 10px;
+	background: #f9fdff;
+	box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+	-webkit-box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+	font-family: '微软雅黑';
+	z-index: 999;
+	.title {
+		display: block;
+		text-align: center;
+		font-size: 1.1em;
+		font-weight: 400;
+	}
+	.back {
+		position: absolute;
+		left: 10px;
+		top: 0;
+		height: 36px;
+		line-height: 36px;
+		color: #03a9f4;
+		i {
+			font-size: 36px;
+			font-weight: 500;
+			padding-right: 5px;
+		}
+		span {
+			float: right;
+			display: block;
+			height: 36px;
+		}
+	}
+
+}
