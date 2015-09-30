@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router, Route, Link, IndexRoute } from 'react-router';
-import history from './components/history.js';
+import { createHashHistory } from 'history';
 
 /* Import Component */
 import Home from './pages/home.jsx';
@@ -11,18 +11,18 @@ import MyOrder from './pages/my-order.jsx';
 import Layout from './pages/layout.jsx';
 
 /* create history for router */
-
+let history = new createHashHistory();
 
 /* Router Config */
 const routes = 
 	<Router history={history}>
 	    <Route path="/" component={Layout}>
+		    <IndexRoute component={Home} />
 			<Route path="home" component={Home} />
 			<Route path="order" component={Order} />
 			<Route path="pay" component={Pay} />
 			<Route path="login" component={Login} />
 			<Route path="my-order" component={MyOrder} />
-			<IndexRoute component={Home} />
 	    </Route>
 	</Router>
 	;

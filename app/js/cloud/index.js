@@ -97,15 +97,8 @@ let Cloud = {
 	    })
 	},
 	getUserOrders(username, token, callback){
-	    fetch(URL + '/users/getUserOrders', {
+	    fetch(URL + '/users/getUserOrders?username='+ username, {
 	    	method: 'GET',
-			headers: {
-			    'Accept': 'application/json',
-			    'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-	      		username: username,
-			})
 	    }).then((data)=>{
 	    	return data.json();
 	    }).then((resp)=>{

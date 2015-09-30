@@ -2,7 +2,6 @@ import React from 'react/addons';
 import '../../css/login.scss';
 import {login, register} from '../cloud';
 import cookie from 'cookie-cutter';
-import history from '../components/history.js';
 import _ from 'underscore';
 
 const Login = React.createClass({
@@ -40,7 +39,7 @@ const Login = React.createClass({
 	            cookie.set('account', JSON.stringify(account));
 	            cookie.set('status','success');
 	            console.log('log in!');
-	            history.replaceState(null, '/order');
+	            this.props.history.pushState(null, '/order');
 			}else if(data.status == 'error' && data.code == 211){
 				register(username, password ,(data)=>{
 					if(data.status == 'success'){
@@ -50,7 +49,7 @@ const Login = React.createClass({
 			            cookie.set('token', data['user']['token']);
 			            cookie.set('account', '{}');
 			            console.log('sign up!');
-			            history.replaceState(null, '/order');
+			            this.props.history.pushState(null, '/order');
 					}else{
 			      		self.setState({
 			      			password_message: '请确保网络正常连接!',
@@ -78,13 +77,13 @@ const Login = React.createClass({
 		})
 	},
 	checkOut(){
-		if(this._checkusername() && this._checkPassword() && this._verifyPassword()){
+		if(this._checkUserName() && this._checkPassword() && this._verifyPassword()){
 			return true;
 		}else{
 			return false;
 		}
 	},
-	_checkusername(){
+	_checkUserName(){
 		let username = this.state.username;
 		if(username && username.length == 7 && _.isFinite(username)){
 			this.setState({
@@ -150,7 +149,7 @@ const Login = React.createClass({
 		this.login(this.state.username,this.state.password);
 	},
 	_back(){
-		history.replaceState(null, '/home');
+		this.props.history.pushState({}, `/home/`, null);
 	},
 	render(){
 		return(
@@ -161,7 +160,7 @@ const Login = React.createClass({
 			          	<div className="col-xs-12">
 				          <input
 					        type="text"
-				          	onBlur={this._checkusername}
+				          	onBlur={this._checkUserName}
 				          	valueLink={this.linkState('username')}
 				          	placeholder="学号"
 				      	  />
@@ -187,12 +186,12 @@ const Login = React.createClass({
 				      	  />
 				      	  <p className="messageBox">{this.state.passwordConfirm_message}</p>
 				      	</div>
-				      	<div className="row col-xs-12">
-				      	    <div className="buttonGroup col-xs-6 start-xs">
-				      	  	  <button type="button" onClick={this._back}>返回</button>
+				      	<div>
+				      	    <div className="buttonGroup">
+				      	  	  <button className="left" type="button" onClick={this._back}>返回</button>
 				      	    </div>
-				      	    <div className="buttonGroup col-xs-6 end-xs">
-				      	  	  <button type="submit" disabled={!this.state.loginCompleted}>{this.state.loginCompleted ? '登陆' : '登陆中...'}</button>
+				      	    <div className="buttonGroup">
+				      	  	  <button className="right" type="submit" disabled={!this.state.loginCompleted}>{this.state.loginCompleted ? '登陆' : '登陆中...'}</button>
 				      	    </div>
 			      	    </div>
 		          </form>

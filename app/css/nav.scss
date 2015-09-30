@@ -6,7 +6,6 @@
 	background: #f9fdff;
 	box-shadow: 0 0 0 1px rgba(0,0,0,.1);
 	-webkit-box-shadow: 0 0 0 1px rgba(0,0,0,.1);
-	font-family: '微软雅黑';
 	z-index: 999;
 	.title {
 		display: block;
@@ -17,10 +16,11 @@
 	.back {
 		position: absolute;
 		left: 10px;
-		top: 0;
+		top: 1px;
 		height: 36px;
 		line-height: 36px;
 		color: #03a9f4;
+		cursor: pointer;
 		i {
 			font-size: 36px;
 			font-weight: 500;
@@ -32,5 +32,23 @@
 			height: 36px;
 		}
 	}
-
+	.account {
+	  position: absolute;
+	  right: 10px;
+	  top: 4px;
+	  height: 30px;
+	  line-height: 30px;
+	  color: #03a9f4;
+	  cursor: pointer;
+	  i {
+		font-size: 30px;
+		font-weight: 500;
+		padding-left: 5px;
+	  }
+	  span {
+		float: left;
+		display: block;
+		height: 36px;
+	  }
+	}
 }
