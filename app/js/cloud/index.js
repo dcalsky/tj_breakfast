@@ -96,8 +96,8 @@ let Cloud = {
 	    	callback(err)
 	    })
 	},
-	getUserOrders(username, token, callback){
-	    fetch(URL + '/users/getUserOrders?username='+ username, {
+	getUserOrders(username, token, page, callback){
+	    fetch(URL + '/users/getUserOrders?username='+ username + '&page=' + page, {
 	    	method: 'GET',
 	    }).then((data)=>{
 	    	return data.json();

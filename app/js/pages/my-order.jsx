@@ -11,7 +11,8 @@ const MyOrder = React.createClass({
 		return{
 			orders: [],
 			loadCompleted: false,
-			loadFailed: false
+			loadFailed: false,
+            page: 1,
 		};
 	},
 	componentWillMount(){
@@ -19,7 +20,7 @@ const MyOrder = React.createClass({
 		if(!username || !token) {
             this.props.history.pushState(null, '/login');
         }
-		getUserOrders(username,'', (data)=>{
+		getUserOrders(username,'', this.state.page, (data)=>{
 			console.log(data);
 			if(data['status'] == 'error'){
 				this.setState({
