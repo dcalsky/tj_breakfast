@@ -17,6 +17,9 @@ const Login = React.createClass({
 	      	loginCompleted: true,
 	    };
 	},
+    componentWillMount(){
+        console.log(this.props.location.state);
+    },
 	login(username,password){
 		let self = this;
 		login(username, password, (data)=>{
@@ -35,19 +38,18 @@ const Login = React.createClass({
 	            }
 	            cookie.set('username', data['user']['username']);
 	            cookie.set('token', data['user']['token']);
-	            cookie.set('authority', data['user']['authority']);
-	            cookie.set('account', JSON.stringify(account));
-	            cookie.set('status','success');
+	            //cookie.set('authority', data['user']['authority']);
+
+	            sessionStorage.setItem('account', JSON.stringify(account));
 	            console.log('log in!');
 	            this.props.history.pushState(null, '/order');
 			}else if(data.status == 'error' && data.code == 211){
 				register(username, password ,(data)=>{
 					if(data.status == 'success'){
 			            cookie.set('username',username);
-			            cookie.set('status','success');
-			            cookie.set('authority', data['user']['authority']);
+			            //cookie.set('authority', data['user']['authority']);
 			            cookie.set('token', data['user']['token']);
-			            cookie.set('account', '{}');
+                        sessionStorage.setItem('account', '{}');
 			            console.log('sign up!');
 			            this.props.history.pushState(null, '/order');
 					}else{
@@ -55,7 +57,7 @@ const Login = React.createClass({
 			      			password_message: '请确保网络正常连接!',
 			      			password: null,
 			      			passwordConfirm: null,
-			      			loginCompleted: true,
+			      			loginCompleted: true
 			      		});
 					}
 				});
@@ -64,24 +66,20 @@ const Login = React.createClass({
 	      			password_message: '账号或者密码错误!',
 	      			password: null,
 	      			passwordConfirm: null,
-	      			loginCompleted: true,
+	      			loginCompleted: true
 	      		});
 			}else{
 	      		self.setState({
 	      			password_message: '请确保网络正常连接!',
 	      			password: null,
 	      			passwordConfirm: null,
-	      			loginCompleted: true,
+	      			loginCompleted: true
 	      		});
 			}
 		})
 	},
 	checkOut(){
-		if(this._checkUserName() && this._checkPassword() && this._verifyPassword()){
-			return true;
-		}else{
-			return false;
-		}
+        return this._checkUserName() && this._checkPassword() && this._verifyPassword();
 	},
 	_checkUserName(){
 		let username = this.state.username;
@@ -149,7 +147,7 @@ const Login = React.createClass({
 		this.login(this.state.username,this.state.password);
 	},
 	_back(){
-		this.props.history.pushState({}, `/home/`, null);
+		this.props.history.pushState(null, `/home`, null);
 	},
 	render(){
 		return(

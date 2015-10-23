@@ -5,21 +5,16 @@ import cookie from 'cookie-cutter';
 import _ from 'underscore';
 
 const Order = React.createClass({
+    cart: {},
 	today: new Date(),
 	mixins: [React.addons.LinkedStateMixin],
 	getInitialState() {
 	    return {
 	    	goods: [],
-	    	account: null,
-	    	total: 0,
-	    	count: 0,
+	    	account: {},
 	    	marks: '',
 	    	username: '',
 	    	token: '',
-	    	name: '',
-	    	floor: '',
-	    	room: '',
-	    	phone: '',
 	    	startDate: this.addDate(this.today, 1),
 	    	loadCompleted: false,
 	    	ableToBuy: false,
@@ -28,22 +23,15 @@ const Order = React.createClass({
 	    };
 	},
 	componentWillMount() {
-		if(cookie.get('status') != 'success' || cookie.get('total') == 0){
-			this.props.history.pushState(null, 'pay');
+        this.cart = sessionStorage.getItem('cart');
+		if(!this.cart){
+			this.props.history.pushState(null, '/home');
+            return ;
 		}
-		let account = JSON.parse(cookie.get('account'));
 		this.setState({
-			goods: cookie.get('cart') ? JSON.parse(cookie.get('cart')) : [],
-			account: account,
-			name: account['name'],
+			account: JSON.parse(sessionStorage.getItem('account')),
 			username: cookie.get('username'),
 			token: cookie.get('token'),
-			phone: account['phone'],
-			floor: account['floor'],
-			room: account['room'],
-			gender: 'male',
-			total: cookie.get('total'),
-			count: cookie.get('count'),
 			loadCompleted: true,
 			ableToBuy: true,
 		});
@@ -88,7 +76,7 @@ const Order = React.createClass({
 		return true;
 	},
 	_back(){
-		this.props.history.pushState(null, 'home');
+		this.props.history.pushState(null, '/home');
 	},
 	_buy(){
 		let self = this;
@@ -103,10 +91,10 @@ const Order = React.createClass({
 		});
 		let order = {
 			gender: 'male',
-			name: this.state.name,
-			room: this.state.room,
-			floor: this.state.floor,
-			phone: this.state.phone,
+			name: this.state.account.name,
+			room: this.state.account.room,
+			floor: this.state.account.floor,
+			phone: this.state.account.phone,
 			username: this.state.username,
 			token: this.state.token,
 			startDate: this.state.startDate,
@@ -119,7 +107,7 @@ const Order = React.createClass({
 			});
 			return ;
 		}
-		createOrder(this.state.username, this.state.token, order , (data)=>{
+		createOrder(order['username'], order['token'], order , (data)=>{
 			if(data['status'] == 'success'){
 				let account = {
 					name: data['user']['name'],

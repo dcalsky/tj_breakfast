@@ -3,7 +3,7 @@ import '../../css/my-order.scss';
 import {getUserOrders} from '../cloud';
 import {foodFliter} from '../utils';
 import cookie from 'cookie-cutter';
-import Loader from '../components/loader.jsx';
+import Loading from '../components/loading.jsx';
 import _ from 'underscore';
 
 const MyOrder = React.createClass({
@@ -12,7 +12,8 @@ const MyOrder = React.createClass({
 			orders: [],
 			loadCompleted: false,
 			loadFailed: false,
-            page: 1,
+            loaderShow: true,
+            page: 1
 		};
 	},
 	componentWillMount(){
@@ -28,6 +29,9 @@ const MyOrder = React.createClass({
 					loadFailed: true
 				});
 			}else {
+                this.setState({
+                      loaderShow: data['orders'].length >= 5
+                });
                 _.map(data['orders'], (order)=> {
                     order['foods'] = foodFliter(order['foods']);
                 });
@@ -91,23 +95,18 @@ const MyOrder = React.createClass({
                             })}
                         </ul>
                     </section>
-                    {
-                        this.state.loadCompleted ?
-                            null
-                            :
-                            <div />
-                    }
-                    {
-                        this.state.loadFailed ?
-                            <div />
-                            :
-                            null
-                    }
+                    <div className="loader">
+                        <button className="loader" type="button" onClick={this.loadMore}>查看更多</button>
+                    </div>
                 </div>
+            );
+        }else if(this.state.loadFaild){
+            return(
+                <div />
             );
         }else{
             return(
-                <Loader />
+                <Loading />
             );
         }
 	}

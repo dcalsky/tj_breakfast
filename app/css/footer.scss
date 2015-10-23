@@ -1,0 +1,71 @@
+
+footer {
+	position: fixed;
+	bottom: -1px;
+	left: 0;
+	background: #333;
+	width: 100%;
+	.container {
+		height: 32px;
+		position: relative;
+		margin: 0;
+		list-style: none;
+		.cart {
+			position: relative;
+			float: left;
+			.cart-count {
+				position: absolute;
+				top: -10px;
+				left: 45px;
+				width: 20px;
+				height: 20px;
+				font-size: 0.8em;
+				background: #fe2947;
+				border-radius: 20px;
+				text-align: center;
+				font-style: normal;
+				line-height: 20px;
+				color: #eee;
+			}
+			i {
+				position: absolute;
+				top: -6px;
+				left: 15px;
+				color: #fff;
+				background: #212121;
+				border-radius: 50%;
+				font-size: 30px;
+				width: 40px;
+				height: 40px;
+				text-align: center;
+				line-height: 36px;
+			}
+		}
+		.total {
+			position: absolute;
+			left: 90px;
+			color: #fff;
+			height: 32px;
+			line-height: 32px;
+			.price {
+				b {
+					color: #fff;
+				}
+			}
+		}
+		.buy {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			height: 100%;
+			width: 116px;
+			background: #b0120a;
+			color: #fff;
+			border: 0;
+			&:disabled {
+				background: #757575;
+				color: #fafafa;
+			}
+		}
+	}
+}

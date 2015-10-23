@@ -1,10 +1,10 @@
 import React from 'react';
-import '../../css/loader.scss';
+import '../../css/loading.scss';
 
-const Loader = React.createClass({
+const Loading = React.createClass({
     render(){
         return(
-            <div className="loader">
+            <div className="loading">
                 <div className="title">
                     {this.props.title ? this.props.title : 'LOADING ...'}
                 </div>
@@ -14,4 +14,4 @@ const Loader = React.createClass({
     }
 });
 
-export default Loader;
+export default Loading;

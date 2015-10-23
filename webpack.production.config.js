@@ -1,21 +1,22 @@
 var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
+var UglifyJsPlugin = require("webpack/lib/optimize/UglifyJsPlugin");
 
 module.exports = {
 	entry: {
-		app: ['webpack/hot/dev-server', path.resolve(__dirname, 'app/js/main.js')],
+		app: [path.resolve(__dirname, 'app/js/main.js')],
 		vendors: ['react', 'react-router'],
 	},
 	output: {
-		path: path.resolve(__dirname, 'build'),
+		path: path.resolve(__dirname, 'dist'),
 		filename: 'bundle.[hash].js'
 	},
 	module: {
 		loaders: [{
 			test: /\.jsx?$/,
 			exclude: /node_modules/,
-			loaders: ['react-hot', 'babel-loader']
+			loaders: ['babel-loader']
 		},{
 			test: /\.css$/,
 			loader: 'style!css',
@@ -41,7 +42,12 @@ module.exports = {
 	      title: '同济早餐',
 	      template: './app/www/index.html',
 	      inject: 'body'
-	    })
+	    }),
+		new UglifyJsPlugin({
+		    compress: {
+		        warnings: false
+		    }
+		})
 	    
 	]
 };

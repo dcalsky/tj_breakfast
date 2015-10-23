@@ -1,0 +1,61 @@
+.nav {
+  position: relative;
+  top: 0;
+  left: 0;
+  padding: 0.6em 10px;
+  background: #f9fdff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  z-index: 999; }
+  .nav .title {
+    display: block;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: 400; }
+  .nav .back {
+    position: absolute;
+    left: 10px;
+    top: 1px;
+    height: 36px;
+    line-height: 36px;
+    color: #03a9f4;
+    cursor: pointer; }
+    .nav .back i {
+      font-size: 36px;
+      font-weight: 500;
+      padding-right: 5px; }
+    .nav .back span {
+      float: right;
+      display: block;
+      height: 36px; }
+  .nav .account {
+    position: absolute;
+    right: 10px;
+    top: 4px;
+    height: 30px;
+    line-height: 30px;
+    color: #03a9f4;
+    cursor: pointer; }
+    .nav .account i {
+      font-size: 30px;
+      font-weight: 500;
+      padding-left: 5px; }
+    .nav .account span {
+      float: left;
+      display: block;
+      height: 36px; }
+
+.loader {
+  margin: 10px 0;
+  padding: 0;
+  text-align: center; }
+  .loader button {
+    font-size: 1em;
+    color: #fff;
+    border: 0;
+    background: #e2e2e2;
+    max-width: 120px;
+    max-height: 36px;
+    outline: none; }
+
+/*# sourceMappingURL=my-order.css.map */

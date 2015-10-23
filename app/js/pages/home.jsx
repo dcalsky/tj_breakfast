@@ -3,7 +3,7 @@ import {getGenres, getFoods} from '../cloud';  // Connect back-end
 import '../../css/home.scss'; // Import inline style
 import cookie from 'cookie-cutter'; 
 import _ from 'underscore';
-import Loader from '../components/loader.jsx';
+import Loading from '../components/loading.jsx';
 
 const GenreList = React.createClass({
 	_getGoods(){
@@ -19,41 +19,36 @@ const GenreList = React.createClass({
 });
 
 const GoodsList = React.createClass({
-	count: 0,
 	getInitialState(){
 	    return {
 	    	count: 0
 	    };
 	},
 	componentWillMount() {
-		let _item = _.findWhere(this.props.cart,{id: this.props.item.id});
-	    this.setState({
-	    	count: _item ? _item.count : 0
-	    });
-	    this.count = _item ? _item.count : 0;
-	    
+        this.setState({
+            count: this.props.cart.foods[this.props.item.id] ? this.props.cart.foods[this.props.item.id] : 0,
+        });
 	},
 	_addCart(){
+        let _count = this.state.count + 1;
 		this.setState({
-			count: this.state.count+1
+			count: _count,
 		});
-		++this.count;
-		this.props._addCart({name: this.props.item.name, price: this.props.item.price,id: this.props.item.id,count: this.count});
+		this.props._addCart({name: this.props.item.name, price: this.props.item.price,id: this.props.item.id,count: _count});
 	},
 	_removeCart(){
-		this.setState({
-			count: this.state.count-1
-		});
-		--this.count;
-		if(this.count > -1){
-			this.props._removeCart({title: this.props.item.title, price: this.props.item.price,id: this.props.item.id,count: this.count});
-		}
+        if(this.state.count > 0){
+            let _count = this.state.count - 1;
+            this.setState({
+                count: _count,
+            });
+            this.props._removeCart({title: this.props.item.title, price: this.props.item.price,id: this.props.item.id,count: _count});
+        }
 	},
 	render(){
 		return(
 			<li>
-				<div className="list-img">
-				</div>
+				<div className="list-img"></div>
 				<div className="list-content">
 					<h4 className="title">{this.props.item.name}</h4>
 					<p className="description">{this.props.item.desc}</p>
@@ -74,54 +69,66 @@ const GoodsList = React.createClass({
 						<button className="plus-button" onClick={this._addCart}><i className="zmdi zmdi-plus"></i></button>
 					</div>
 				</div>
-
-
 			</li>
-			
 		)
 	}
 });
 
 const Home = React.createClass({
-	cart: [],
 	getInitialState() {
 	    return {
-	        username: null,
-	        count: 0,
-	        total: 0,
 	        genreList: [],
 	        goodsList: [],
 	        currentFoods: [],
 	        active_id: '',
 	        loadCompleted: false,
+            cart: {
+                foods: {},
+                total: 0.0,
+                count: 0,
+            }
 	    };
 	},
 	componentWillMount() {
 		let self = this;
-		getGenres((genres)=>{
-			self.setState({
-				genreList: genres.genres
-			});
-		});
-		getFoods('', true, (data)=>{
-	        this.setState({
-	      	  	username: cookie.get('username'),
-	      	  	goodsList: data.foods,
-	      	  	currentFoods: data.foods,
-	      	  	loadCompleted: true
-			});
-		});
-        this.cart = cookie.get('cart') ? JSON.parse(cookie.get('cart')) : [];
+
+        // Find out the storage
+        if(!sessionStorage.getItem('goodsList') || !sessionStorage.getItem('genreList')){
+            getGenres((genre)=>{
+                self.setState({
+                    genreList: genre.genres,
+                });
+                sessionStorage.setItem('genreList', JSON.stringify(genre.genres));
+            });
+            getFoods('', true, (data)=>{
+                this.setState({
+                    username: cookie.get('username'),
+                    goodsList: data.foods,
+                    currentFoods: data.foods,
+                    loadCompleted: true
+                });
+                sessionStorage.setItem('goodsList', JSON.stringify(data.foods))
+            });
+        }else{
+            this.setState({
+                goodsList: JSON.parse(sessionStorage.getItem('goodsList')),
+                genreList: JSON.parse(sessionStorage.getItem('genreList')),
+                currentFoods: JSON.parse(sessionStorage.getItem('goodsList')),
+                loadCompleted: true,
+            });
+        }
+
         this.setState({
-        	total: _.reduce(this.cart, function(memo, item){ return memo + item.price * item.count; }, 0).toFixed(2),
-        	count: _.reduce(this.cart, function(memo, item){ return memo + item.count; }, 0),
+            cart: sessionStorage.getItem('cart') ? JSON.parse(sessionStorage.getItem('cart')) : {
+                foods: {},
+                total: 0.00,
+                count: 0,
+            },
         });
 	},
 	_buy(){
-		cookie.set('cart',JSON.stringify(this.cart));
-		cookie.set('total',this.state.total);
-		cookie.set('count',this.state.count);
-		if(cookie.get('account') != '' && cookie.get('status') == 'success'){
+		sessionStorage.setItem('cart',JSON.stringify(this.state.cart));
+		if(cookie.get('username') && cookie.get('token') ){
 			this.props.history.pushState(null, '/order');
 		}else{
 			this.props.history.pushState(null, '/login');
@@ -135,6 +142,7 @@ const Home = React.createClass({
 		});
 	},
 	_addCart(item){
+        /*
 		let _item = _.findWhere(this.cart,{id: item.id});
 		let total, count;
 		if(_item){
@@ -146,8 +154,22 @@ const Home = React.createClass({
 			total: _.reduce(this.cart, function(memo, item){ return memo + item.price * item.count; }, 0),
 			count: _.reduce(this.cart, function(memo, item){ return memo + item.count; }, 0),
 		});
+		*/
+
+        let _foods = this.state.cart.foods;
+        // id : count
+        _foods[item.id] = _foods[item.id] ?  _foods[item.id] + 1 : 1 ;
+        this.setState({
+            cart: {
+                count: this.state.cart.count + 1,
+                total: (parseFloat(this.state.cart.total) + parseFloat(item.price)).toFixed(2),
+                foods: _foods,
+            }
+        });
+
 	},
 	_removeCart(item){
+        /*
 		if(item.count == 0){
 			this.cart = _.reject(this.cart,(_item)=>{
 				return _item.id == item.id; 
@@ -159,9 +181,16 @@ const Home = React.createClass({
 			total: _.reduce(this.cart, function(memo, item){ return memo + item.price * item.count; }, 0),
 			count: _.reduce(this.cart, function(memo, item){ return memo + item.count; }, 0),
 		});
-	},
-	_back(){
-		this.props.history.goBack();
+		*/
+        let _foods = this.state.cart.foods;
+        _foods[item.id] = _foods[item.id] ? _foods[item.id] -- : 0;
+        this.setState({
+            cart: {
+                count: this.state.cart.count - 1,
+                total: parseFloat(this.state.cart.total - item.price).toFixed(2),
+                foods: _foods,
+            }
+        });
 	},
     render() {
         if(this.state.loadCompleted){
@@ -169,9 +198,6 @@ const Home = React.createClass({
                 <div className="home">
                     <header>
                         <div className="nav">
-	            		<span className="back">
-	            			<i className="zmdi zmdi-chevron-left"></i>返回
-	            		</span>
 	            		<span className="title">
 	            			<span>同济早餐</span>
 	            		</span>
@@ -192,7 +218,7 @@ const Home = React.createClass({
 
                         <div className="goods">
                             <ul className="goods-list">
-                                {this.state.currentFoods.map((item)=>{return <GoodsList item={item} _addCart={this._addCart} cart={this.cart} _removeCart={this._removeCart} />})}
+                                {this.state.currentFoods.map((item)=>{return <GoodsList item={item} _addCart={this._addCart} cart={this.state.cart} _removeCart={this._removeCart} />})}
                             </ul>
                         </div>
                     </section>
@@ -200,15 +226,15 @@ const Home = React.createClass({
                         <ul className="container">
                             <li className="cart">
                                 <i className="zmdi zmdi-shopping-cart"></i>
-                                <em className="cart-count" style={{visibility :this.state.count ? 'visible' : 'hidden'}}>{this.state.count}</em>
+                                <em className="cart-count" style={{visibility :this.state.cart.count ? 'visible' : 'hidden'}}>{this.state.cart.count}</em>
                             </li>
                             <li className="total">
 	            			<span className="price">
-            				共 <b>￥{this.state.total}</b> 元
+            				共 <b>￥{this.state.cart.total}</b> 元
             				</span>
                             </li>
                             <li>
-                                <button className="buy" onClick={this._buy} disabled={!(this.state.count ? true : false) || !(this.state.loadCompleted)}>
+                                <button className="buy" onClick={this._buy} disabled={this.state.cart.count == 0 ? true : false || !(this.state.loadCompleted)}>
                                     选好了
                                 </button>
                             </li>
@@ -218,7 +244,7 @@ const Home = React.createClass({
             );
         }else{
             return(
-                <Loader />
+                <Loading />
             );
         }
 

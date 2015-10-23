@@ -1,1 +1,16 @@
 @import "nav";
+
+.loader {
+  margin: 10px 0;
+  padding: 0;
+  text-align: center;
+  button {
+    font-size: 1em;
+    color: #fff;
+    border: 0;
+    background: #e2e2e2;
+    max-width: 120px;
+    max-height: 36px;
+    outline: none;
+  }
+}
